@@ -1,17 +1,24 @@
 source 'https://rubygems.org'
 
+gem 'rails', '4.2.1'
 
-gem 'rails', '4.2.0'
 gem 'sqlite3'
+gem 'pg'
+
 gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
-gem 'coffee-rails', '~> 4.1.0'
+gem 'coffee-rails'
+gem 'coffee-rails-source-maps'
+gem 'haml-rails'
+gem 'jquery-rails'
+
+gem 'sorcery'
+
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
 
-gem 'jquery-rails'
-gem 'epitools'
-gem 'ruby-opencv'
+# gem 'epitools'
+gem 'ruby-opencv', require: 'opencv'
 
 # gem 'turbolinks'
 # gem 'jbuilder', '~> 2.0'
@@ -29,18 +36,10 @@ gem 'ruby-opencv'
 # gem 'capistrano-rails', group: :development
 
 group :development, :test do
-  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  # gem 'byebug'
   gem 'pry-rails'
-  gem 'coderay'
-  gem 'coolline'
-
-  # Access an IRB console on exception pages or by using <%= console %> in views
-  # gem 'web-console', '~> 2.0'
+  gem 'pry-theme'
   gem 'best_errors'
-  # gem "better_errors"
-
-  # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
+  gem 'quiet_assets'
 end
 
