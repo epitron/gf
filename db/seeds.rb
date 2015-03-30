@@ -16,5 +16,5 @@ end
 
 Pathname.new("examples").children.each do |file|
   p file
-  user.photos.create(image_file: file)
+  user.photos.create(image_file: file, public: true)
 end
