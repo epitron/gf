@@ -12,6 +12,8 @@ gem 'coffee-rails-source-maps'
 gem 'haml-rails'
 gem 'jquery-rails'
 
+gem 'epitools', require: 'epitools/path'
+
 gem 'sorcery'
 
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
@@ -20,7 +22,7 @@ gem 'sorcery'
 # gem 'epitools'
 gem 'ruby-opencv', require: 'opencv'
 
-# gem 'turbolinks'
+gem 'turbolinks'
 # gem 'jbuilder', '~> 2.0'
 
 # bundle exec rake doc:rails generates the API under doc/api.

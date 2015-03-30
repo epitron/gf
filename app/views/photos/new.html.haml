@@ -1,0 +1,14 @@
+= form_for @photo do |f|
+  - if @photo.errors.any?
+    .error_messages
+      %h2 Oops!
+      %ul
+        - for message in @photo.errors.full_messages
+          %li= message
+
+  .field
+    = f.label :image_file
+    = f.file_field :image_file
+
+  .actions
+    = f.submit "Upload photo"

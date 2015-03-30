@@ -1,0 +1,9 @@
+
+%h1 photos!
+= button_to "upload photo", new_photo_path, method: "get"
+
+- @photos.each do |photo|
+  %p
+    = image_tag thumb_photo_path(photo)
+    = link_to photo.filename, photo
+

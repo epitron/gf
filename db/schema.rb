@@ -15,6 +15,10 @@ ActiveRecord::Schema.define(version: 20150329072140) do
 
   create_table "faces", force: :cascade do |t|
     t.integer  "photo_id"
+    t.integer  "x"
+    t.integer  "y"
+    t.integer  "width"
+    t.integer  "height"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -23,6 +27,8 @@ ActiveRecord::Schema.define(version: 20150329072140) do
 
   create_table "photos", force: :cascade do |t|
     t.integer  "user_id"
+    t.integer  "width"
+    t.integer  "height"
     t.string   "filename"
     t.boolean  "public",     default: false
     t.datetime "created_at",                 null: false

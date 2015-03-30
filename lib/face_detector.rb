@@ -1,4 +1,4 @@
-require 'epitools'
+require 'epitools/path'
 require 'opencv'
 include OpenCV
 
@@ -20,14 +20,28 @@ COLORS = [
 #   - delete a big region that has many small regions in it
 #
 
-class Faces
+def time(message=nil)
+  start = Time.now
+  result = yield
+  elapsed = Time.now - start
+  
+  print "[#{message}] " if message
+  puts "elapsed time: %0.5fs" % elapsed
+  result
+end
+
+class FaceDetector
 
   MAX_RESOLUTION = 2000
 
   attr_accessor :detectors
 
   def initialize
-    @detectors = Path["xml/*.xml"].map do |xml|
+    # xml_files = Path["#{__dir__}/haar-xml/*.xml"]
+    xml_files = Path["#{__dir__}/haar-xml/frontal*.xml"]
+    raise "Error: Could not find any cascade files" if xml_files.empty?
+
+    @detectors = xml_files.map do |xml|
       detector = time("load #{xml}") { CvHaarClassifierCascade::load(xml) }
       [xml.basename, detector]
     end.to_h
@@ -66,8 +80,6 @@ class Faces
     window.destroy
   end
 
-private
-
   def annotate!(image, detected)
     font = CvFont.new(:simplex) # CvFont.new(:simplex, :hscale => 2, :vslace => 2, :italic => true)
 
@@ -92,7 +104,7 @@ private
     resize(image)
   end
 
-  def resize(image)
+  def resized(image)
     s = image.size
 
     if s.width > MAX_RESOLUTION or s.height > MAX_RESOLUTION
@@ -126,22 +138,24 @@ private
 end
 
 
-args  = ARGV
+if __FILE__ == $0
 
-if args.empty?
-  puts "Usage: ruby #{__FILE__} <image files...>"
-  exit 1
-end
+  args  = ARGV
 
-faces = Faces.new
-
-args.each do |arg|
-  puts "=================== #{arg} ======================"
-  begin
-    faces.display_annotated(arg)
-  rescue StandardError => e
-    p e
+  if args.empty?
+    puts "Usage: ruby #{__FILE__} <image files...>"
+    exit 1
   end
+
+  faces = FaceDetector.new
+
+  args.each do |arg|
+    puts "=================== #{arg} ======================"
+    begin
+      faces.display_annotated(arg)
+    rescue StandardError => e
+      p e
+    end
+  end
+
 end
-
-
