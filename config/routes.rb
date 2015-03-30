@@ -8,7 +8,13 @@ Rails.application.routes.draw do
       get "thumb"
       post "redetect"
     end
-    resources :faces
+    
+    resources :faces do
+      member do
+        get "image"
+      end
+    end
+
   end
 
   get "logout" => "sessions#destroy", :as => "logout"

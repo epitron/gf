@@ -1,0 +1,27 @@
+= form_for @photo do |f|
+
+  - if @photo.errors.any?
+    .error_messages
+      %h2 Form is invalid
+      %ul
+        - for message in @photo.errors.full_messages
+          %li= message
+
+  %table
+    = f.fields_for :faces do |ff|
+      - face = ff.object
+      %tr
+        %td
+          = image_tag image_photo_face_path(@photo, face), class: "face", width: face.width, height: face.height
+        %td
+          = ff.hidden_field :id
+
+          = ff.label :name
+          = ff.text_field :name
+          %br
+          =# ff.label :description
+          =# ff.text_area :description
+
+
+  = f.submit        
+  

@@ -12,5 +12,10 @@
 //
 //= require jquery
 //= require jquery_ujs
+
+//= require jquery-ui/draggable
+//= require jquery-ui/resizable
+//= require jquery-ui/tooltip
+
 //= require turbolinks
 //= require_tree .

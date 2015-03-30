@@ -31,6 +31,17 @@ class PhotosController < ApplicationController
   def show
   end
 
+  def edit
+  end
+
+  def update
+    if @photo.update_attributes(photo_params)
+      redirect_to @photo
+    else
+      render "edit"
+    end
+  end
+
   def full
     send_file @photo.absolute_path, type: 'image/jpeg', disposition: 'inline'
   end
@@ -47,7 +58,7 @@ class PhotosController < ApplicationController
 private
 
   def photo_params
-    params.require(:photo).permit(:image_file)
+    params.require(:photo).permit(:image_file, :faces_attributes => [:id, :name, :description])
   end
 
   def load_photo

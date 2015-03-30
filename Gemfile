@@ -11,6 +11,7 @@ gem 'coffee-rails'
 gem 'coffee-rails-source-maps'
 gem 'haml-rails'
 gem 'jquery-rails'
+gem 'jquery-ui-rails'
 
 gem 'epitools', require: 'epitools/path'
 

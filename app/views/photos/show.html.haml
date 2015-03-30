@@ -1,9 +1,14 @@
+
 = link_to "<< Back to photos", photos_path
 
 %h1= @photo.filename
 
 = button_to "Redetect Faces", redetect_photo_path(@photo)
+= button_to "Edit names", edit_photo_path(@photo), method: :get
 
 .photo-container{style: "background-image: url('#{full_photo_path @photo}'); width: #{@photo.width}px; height: #{@photo.height}px;"}
   - @photo.faces.each do |face|
-    .region{style: "left: #{face.x}px; top: #{face.y}px; width: #{face.width}px; height: #{face.height}px;"}
+    .region{style: "left: #{face.x}px; top: #{face.y}px; width: #{face.width}px; height: #{face.height}px;", title: face.name}
+      -# .handle.SE
+      .delete-button
+        = image_tag "delete-icon.png", width: 16, height: 16

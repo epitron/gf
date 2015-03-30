@@ -10,6 +10,7 @@
  * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
  * file per style scope.
  *
+ *= require jquery-ui
  *= require_tree .
  *= require_self
  */
@@ -26,14 +27,3 @@ nav {
 
 nav li { display: inline; background: pink; }
 
-
-.photo-container { position: relative; }
-
-.region {
-  position: absolute;
-  border: 2px dotted red;
-}
-
-.region:hover {
-  background-color: rgba(6, 113, 255, 0.13);
-}

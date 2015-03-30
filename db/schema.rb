@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150329072140) do
+ActiveRecord::Schema.define(version: 20150330070041) do
 
   create_table "faces", force: :cascade do |t|
     t.integer  "photo_id"
@@ -19,8 +19,10 @@ ActiveRecord::Schema.define(version: 20150329072140) do
     t.integer  "y"
     t.integer  "width"
     t.integer  "height"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.string   "name"
+    t.text     "description"
   end
 
   add_index "faces", ["photo_id"], name: "index_faces_on_photo_id"
@@ -33,6 +35,7 @@ ActiveRecord::Schema.define(version: 20150329072140) do
     t.boolean  "public",     default: false
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
+    t.string   "title"
   end
 
   create_table "users", force: :cascade do |t|

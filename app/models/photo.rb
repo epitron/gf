@@ -3,13 +3,18 @@ class Photo < ActiveRecord::Base
   MAX_RESOLUTION = 2000
   THUMB_RESOLUTION = 200
 
+  UPLOAD_DIR = Rails.root / "uploads"
+  UPLOAD_DIR.mkdir unless UPLOAD_DIR.exist?
+
+
   has_many :faces, dependent: :destroy
   belongs_to :user
+
+  accepts_nested_attributes_for :faces
 
   validate        :ensure_valid_image
   before_save     :set_dimensions
   after_save      :write_image
-  after_save      :redetect_faces!
   before_destroy  :remove_file
 
   def image_file=(file)
@@ -22,11 +27,11 @@ class Photo < ActiveRecord::Base
   end
 
   def absolute_path
-    (upload_dir / "#{id}.jpg").to_s
+    (UPLOAD_DIR / "#{id}.jpg").to_s
   end
 
   def thumb_path
-    (upload_dir / "#{id}.thumb.jpg").to_s
+    (UPLOAD_DIR / "#{id}.thumb.jpg").to_s
   end
 
   def redetect_faces!
@@ -36,11 +41,11 @@ class Photo < ActiveRecord::Base
     faces.create(regions)
   end
 
-private
-
-  def upload_dir
-    Rails.root / "uploads"
+  def subimage(*slice)
+    image.subrect(*slice)
   end
+
+private
 
   def set_dimensions
     self.width  ||= image.width
@@ -48,7 +53,7 @@ private
   end
 
   def ensure_valid_image
-    @image.dims
+    File.exists?(absolute_path) or (@image && @image.dims)
   rescue OpenCV::CvStsBadArg
     errors.add(:image_file, "must be a valid JPEG or a PNG file")
   end
@@ -81,11 +86,10 @@ private
 
   def write_image
     # make upload directory
-    upload_dir.mkdir unless upload_dir.exist?
 
     # generate file and thumb
     resized(MAX_RESOLUTION).save_image(absolute_path) unless File.exists? absolute_path
-    resized(THUMB_RESOLUTION).save_image(thumb_path) unless File.exists? thumb_path
+    resized(THUMB_RESOLUTION).save_image(thumb_path)  unless File.exists? thumb_path
   end
 
   def remove_file
