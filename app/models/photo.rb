@@ -1,3 +1,18 @@
+module Enumerable
+  def median
+    sorted = sort
+    len = sorted.length
+    return (sorted[(len - 1) / 2] + sorted[len / 2]) / 2.0
+  end
+end
+
+class OpenCV::CvAvgComp
+
+  def inspect
+    "#<Region @ (#{x},#{y})-#{width}x#{height}>"
+  end
+end
+
 class Photo < ActiveRecord::Base
 
   MAX_RESOLUTION = 2000
@@ -45,6 +60,10 @@ class Photo < ActiveRecord::Base
     image.subrect(*slice)
   end
 
+  def median_face_size
+    [faces.map(&:width).median, faces.map(&:height).median]
+  end
+
 private
 
   def set_dimensions
@@ -74,10 +93,42 @@ private
     end
   end
 
+  def filter_regions(rs)
+    # step 1: remove regions that are way too big and contain other regions
+    # step 2: remove overlapping regions
+
+    rs.combination(2).map do |r0, r1|
+      # algorithm: http://jsfiddle.net/uthyZ/
+
+      x11 = r0.x
+      y11 = r0.y
+      x12 = r0.x + r0.width
+      y12 = r0.y + r0.height
+      x21 = r1.x
+      y21 = r1.y
+      x22 = r1.x + r1.width
+      y22 = r1.y + r1.height
+
+      inner_left   = [x11,x21].max
+      inner_right  = [x12,x22].min
+      inner_top    = [y11,y21].max
+      inner_bottom = [y12,y22].min
+
+      x_overlap = [ 0, inner_right - inner_left ].max
+      y_overlap = [ 0, inner_bottom - inner_top ].max
+
+      overlap = x_overlap * y_overlap
+
+      overlap > 0 ? [r0, r1, overlap] : nil
+    end.compact
+  end
+
   def detect_face_regions
     regions = FACE_CLASSIFIERS.map do |classifier|
       classifier.detect_objects(image).to_a
     end.flatten
+
+    p filtered: filter_regions(regions)
 
     regions.map do |region|
       {x: region.x, y: region.y, width: region.width, height: region.height}

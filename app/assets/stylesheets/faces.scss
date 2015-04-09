@@ -7,7 +7,10 @@
 
 .region {
   position: absolute;
-  border: 2px dotted rgba(3, 250, 166, 0.57);
+  // border: 2px dotted rgba(3, 250, 166, 0.57);
+  border: 1px solid rgba(47, 129, 255, 0.57);
+  background-color: rgba(30, 164, 247, 0.32);
+  box-shadow: 0 0 10px rgba(10, 246, 255, 0.61) inset;
 }
 
 img.face {
@@ -22,7 +25,7 @@ img.face {
 }
 
 .region:hover {
-  background-color: rgba(6, 113, 255, 0.13);
+  // background-color: rgba(6, 113, 255, 0.13);
 }
 
 .handle {

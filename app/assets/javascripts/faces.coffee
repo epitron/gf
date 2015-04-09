@@ -3,10 +3,19 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
 $(document).ready ->
-  $(".region").draggable().resizable(handles: "se").tooltip()
+  decorate = (e)->
+    e.draggable().resizable(handles: "se").tooltip()
+    e.find(".delete-button").on 'click', ->
+      $(this).parent(".region").remove()
 
-  $(".delete-button").on 'click', ->
-    $(this).parent(".region").remove()
+  prototype_region = $("#prototype .region")
+
+  decorate($(".photo-container .region"))
+
+  $(".add-region").on 'click', ->
+    new_region = prototype_region.clone()
+    decorate(new_region)
+    $('.photo-container').append(new_region)
 
   # $('.drag').click(->
   #   $(this).toggleClass 'selected'

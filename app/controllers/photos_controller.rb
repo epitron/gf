@@ -2,6 +2,7 @@ class PhotosController < ApplicationController
 
   before_filter :require_login, except: [:index]
 
+  # show current_user's photos
   def index
     if current_user
       @photos = current_user.photos
@@ -10,10 +11,12 @@ class PhotosController < ApplicationController
     end
   end
 
+  # upload form
   def new
     @photo = Photo.new
   end
 
+  # upload photo
   def create
     @photo = Photo.new(photo_params)
     @photo.user = current_user
@@ -29,6 +32,7 @@ class PhotosController < ApplicationController
   before_filter :load_photo, except: [:index, :new, :create]
 
   def show
+    @median_width, @median_height = @photo.median_face_size
   end
 
   def edit
